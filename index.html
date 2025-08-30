@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Bank Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="loading-overlay" class="hidden"><div class="spinner"></div></div>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                 <h1 class="logo">
+                    <span class="logo-icon"><i class="fas fa-tint fa-lg"></i></span>
+                    <span class="logo-text">
+                        <span class="logo-gradient">Blood Bank</span><span class="logo-subtext"> Management System</span>
+                    </span>
+                </h1>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" data-target="dashboard-section" class="active" data-tooltip="Dashboard"><span class="nav-icon"><i class="fas fa-chart-pie fa-fw"></i></span><span class="nav-text">Dashboard</span></a></li>
+                    <li><a href="#" data-target="inventory-section" data-tooltip="Blood Inventory"><span class="nav-icon"><i class="fas fa-boxes fa-fw"></i></span><span class="nav-text">Blood Inventory</span></a></li>
+                    <li><a href="#" data-target="bloodtypes-section" data-tooltip="Blood Types"><span class="nav-icon"><i class="fas fa-vial fa-fw"></i></span><span class="nav-text">Blood Types</span></a></li>
+                    <li><a href="#" data-target="hospitals-section" data-tooltip="Hospitals"><span class="nav-icon"><i class="far fa-hospital fa-fw"></i></span><span class="nav-text">Hospitals</span></a></li>
+                    <li><a href="#" data-target="donors-section" data-tooltip="Donors"><span class="nav-icon"><i class="fas fa-user-plus fa-fw"></i></span><span class="nav-text">Donors</span></a></li>
+                    <li><a href="#" data-target="recipients-section" data-tooltip="Recipients"><span class="nav-icon"><i class="fas fa-user-check fa-fw"></i></span><span class="nav-text">Recipients</span></a></li>
+                    <li><a href="#" data-target="donortransactions-section" data-tooltip="Donor Transactions"><span class="nav-icon"><i class="fas fa-hand-holding-medical fa-fw"></i></span><span class="nav-text">Donor Transactions</span></a></li>
+                    <li><a href="#" data-target="recipienttransactions-section" data-tooltip="Recipient Transactions"><span class="nav-icon"><i class="fas fa-receipt fa-fw"></i></span><span class="nav-text">Recipient Transactions</span></a></li>
+                </ul>
+            </nav>
+            <button id="sidebar-toggle" title="Toggle Sidebar"><i class="fas fa-chevron-left"></i></button>
+        </aside>
+
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" data-section="dashboard" class="content-section active-section">
+                <header class="section-header">
+                    <h2><i class="fas fa-chart-pie section-icon"></i> Dashboard</h2>
+                    <p class="section-description">System overview and key statistics.</p>
+                </header>
+                <div class="stats-grid">
+                    <div class="stat-card card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-info"><h3>Total Donors</h3><p id="total-donors">0</p></div></div>
+                    <div class="stat-card card"><div class="stat-icon"><i class="fas fa-procedures"></i></div><div class="stat-info"><h3>Total Recipients</h3><p id="total-recipients">0</p></div></div>
+                    <div class="stat-card card"><div class="stat-icon"><i class="far fa-hospital"></i></div><div class="stat-info"><h3>Total Hospitals</h3><p id="total-hospitals">0</p></div></div>
+                    <div class="stat-card card"><div class="stat-icon"><i class="fas fa-vial"></i></div><div class="stat-info"><h3>Total Blood Types</h3><p id="total-blood-types">0</p></div></div>
+                </div>
+            </section>
+
+            <!-- Blood Inventory Section -->
+            <section id="inventory-section" data-section="inventory" class="content-section">
+                <header class="section-header">
+                    <h2><i class="fas fa-boxes section-icon"></i> Blood Inventory</h2>
+                    <p class="section-description">Live stock levels calculated from transactions.</p>
+                    <!-- Add New Button Added Here -->
+                    <button class="btn btn-primary btn-add"><i class="fas fa-plus"></i> Add New</button>
+                </header>
+                <div class="table-container card">
+                    <table id="inventory-table" class="data-table">
+                        <thead><tr><th>Blood Type ID</th><th>Name</th><th>Units in Stock</th><th>Status</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Blood Types Section -->
+            <section id="bloodtypes-section" data-section="bloodtype" class="content-section">
+                <header class="section-header">
+                    <h2><i class="fas fa-vial section-icon"></i> Blood Types</h2>
+                    <button class="btn btn-primary btn-add"><i class="fas fa-plus"></i> Add New</button>
+                </header>
+                <form id="bloodtype-form" class="data-form card hidden">
+                    <h3><i class="fas fa-edit form-icon"></i> Add/Edit Blood Type</h3><input type="hidden" class="edit-id">
+                    <div class="form-grid">
+                        <div class="form-group"><label for="blood-type-id">Blood Type ID</label><input type="text" id="blood-type-id" name="Blood_Type_ID" placeholder="e.g., BT001" required></div>
+                        <div class="form-group"><label for="blood-type-name">Name</label><input type="text" id="blood-type-name" name="Name" placeholder="e.g., O Negative" required></div>
+                    </div>
+                    <div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button><button type="button" class="btn btn-secondary cancel-btn"><i class="fas fa-times"></i> Cancel</button></div>
+                </form>
+                <div class="table-container card"><table id="bloodtype-table" class="data-table"><thead><tr><th>ID</th><th>Name</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+            </section>
+
+            <!-- Hospitals Section -->
+            <section id="hospitals-section" data-section="hospital" class="content-section">
+                <header class="section-header">
+                    <h2><i class="far fa-hospital section-icon"></i> Hospitals</h2>
+                    <button class="btn btn-primary btn-add"><i class="fas fa-plus"></i> Add New</button>
+                </header>
+                <form id="hospital-form" class="data-form card hidden">
+                     <h3><i class="fas fa-edit form-icon"></i> Add/Edit Hospital</h3><input type="hidden" class="edit-id">
+                    <div class="form-grid">
+                        <div class="form-group"><label for="hospital-id">Hospital ID</label><input type="text" id="hospital-id" name="Hospital_ID" placeholder="e.g., H001" required></div>
+                        <div class="form-group"><label for="hospital-name">Name</label><input type="text" id="hospital-name" name="Name" placeholder="e.g., City General Hospital" required></div>
+                        <div class="form-group form-group-full"><label for="hospital-address">Address</label><input type="text" id="hospital-address" name="Address" placeholder="123 Main St, Anytown"></div>
+                        <div class="form-group"><label for="hospital-contact">Contact Number</label><input type="tel" id="hospital-contact" name="Contact_Number" placeholder="e.g., +1234567890" required></div>
+                    </div>
+                    <div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button><button type="button" class="btn btn-secondary cancel-btn"><i class="fas fa-times"></i> Cancel</button></div>
+                </form>
+                <div class="table-container card"><table id="hospital-table" class="data-table"><thead><tr><th>ID</th><th>Name</th><th>Address</th><th>Contact</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+            </section>
+
+            <!-- Donors Section -->
+            <section id="donors-section" data-section="donor" class="content-section">
+                <header class="section-header">
+                    <h2><i class="fas fa-user-plus section-icon"></i> Donors</h2>
+                    <button class="btn btn-primary btn-add"><i class="fas fa-plus"></i> Add New</button>
+                </header>
+                <form id="donor-form" class="data-form card hidden">
+                    <h3><i class="fas fa-edit form-icon"></i> Add/Edit Donor</h3><input type="hidden" class="edit-id">
+                    <div class="form-grid">
+                        <div class="form-group"><label for="donor-id">Donor ID</label><input type="text" id="donor-id" name="Donor_ID" placeholder="e.g., D001" required></div>
+                        <div class="form-group"><label for="donor-name">Name</label><input type="text" id="donor-name" name="Name" placeholder="Full name" required></div>
+                        <div class="form-group"><label for="donor-contact">Contact Number</label><input type="tel" id="donor-contact" name="Contact_Number" placeholder="e.g., +1234567890" required></div>
+                        <div class="form-group"><label for="donor-age">Age (18+)</label><input type="number" id="donor-age" name="Age" min="18" placeholder="Min 18" required></div>
+                        <div class="form-group"><label for="donor-blood-type">Blood Type</label><select id="donor-blood-type" name="Blood_Type_ID" required><option value="">-- Select Blood Type --</option></select></div>
+                        <div class="form-group"><label for="donor-card-id">Donation Card ID</label><input type="text" id="donor-card-id" name="Donor_Card_ID" placeholder="e.g., CARD001"></div>
+                    </div>
+                    <div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button><button type="button" class="btn btn-secondary cancel-btn"><i class="fas fa-times"></i> Cancel</button></div>
+                </form>
+                <div class="table-container card"><table id="donor-table" class="data-table"><thead><tr><th>ID</th><th>Name</th><th>Contact</th><th>Age</th><th>Blood Type</th><th>Card ID</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+            </section>
+            
+            <!-- Recipients Section -->
+            <section id="recipients-section" data-section="recipient" class="content-section">
+                 <header class="section-header">
+                    <h2><i class="fas fa-user-check section-icon"></i> Recipients</h2>
+                    <button class="btn btn-primary btn-add"><i class="fas fa-plus"></i> Add New</button>
+                </header>
+                <form id="recipient-form" class="data-form card hidden">
+                    <h3><i class="fas fa-edit form-icon"></i> Add/Edit Recipient</h3><input type="hidden" class="edit-id">
+                    <div class="form-grid">
+                        <div class="form-group"><label for="recipient-id">Recipient ID</label><input type="text" id="recipient-id" name="Recipient_ID" placeholder="e.g., R001" required></div>
+                        <div class="form-group"><label for="recipient-name">Name</label><input type="text" id="recipient-name" name="Name" placeholder="Full name" required></div>
+                        <div class="form-group"><label for="recipient-contact">Contact Number</label><input type="tel" id="recipient-contact" name="Contact_Number" placeholder="e.g., +1234567890" required></div>
+                        <div class="form-group"><label for="recipient-blood-type">Required Blood Type</label><select id="recipient-blood-type" name="Blood_Type_ID" required><option value="">-- Select Blood Type --</option></select></div>
+                        <div class="form-group form-group-full"><label for="recipient-donor-id">Directed Donor ID (Optional)</label><select id="recipient-donor-id" name="Donor_ID"><option value="">-- None --</option></select></div>
+                    </div>
+                    <div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button><button type="button" class="btn btn-secondary cancel-btn"><i class="fas fa-times"></i> Cancel</button></div>
+                </form>
+                <div class="table-container card"><table id="recipient-table" class="data-table"><thead><tr><th>ID</th><th>Name</th><th>Contact</th><th>Blood Type</th><th>Directed Donor</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+            </section>
+
+            <!-- Donor Transactions Section -->
+            <section id="donortransactions-section" data-section="donortransaction" class="content-section">
+                 <header class="section-header">
+                    <h2><i class="fas fa-hand-holding-medical section-icon"></i> Donor Transactions</h2>
+                    <button class="btn btn-primary btn-add"><i class="fas fa-plus"></i> Add New</button>
+                </header>
+                <form id="donortransaction-form" class="data-form card hidden">
+                    <h3><i class="fas fa-edit form-icon"></i> Add Donor Transaction</h3><input type="hidden" class="edit-id">
+                    <div class="form-grid">
+                        <div class="form-group"><label for="donor-trans-id">Transaction ID</label><input type="text" id="donor-trans-id" name="Donor_Trans_ID" placeholder="e.g., DT001" required></div>
+                        <div class="form-group"><label for="donor-trans-donor">Donor</label><select id="donor-trans-donor" name="Donor_ID" required><option value="">-- Select Donor --</option></select></div>
+                        <div class="form-group"><label for="donor-trans-hospital">Hospital</label><select id="donor-trans-hospital" name="Hospital_ID" required><option value="">-- Select Hospital --</option></select></div>
+                        <div class="form-group"><label for="donor-trans-date">Donation Date</label><input type="date" id="donor-trans-date" name="Date" required></div>
+                    </div>
+                    <div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button><button type="button" class="btn btn-secondary cancel-btn"><i class="fas fa-times"></i> Cancel</button></div>
+                </form>
+                <div class="table-container card"><table id="donortransaction-table" class="data-table"><thead><tr><th>Trans ID</th><th>Donor</th><th>Hospital</th><th>Date</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+            </section>
+
+            <!-- Recipient Transactions Section -->
+            <section id="recipienttransactions-section" data-section="recipienttransaction" class="content-section">
+                 <header class="section-header">
+                    <h2><i class="fas fa-receipt section-icon"></i> Recipient Transactions</h2>
+                    <button class="btn btn-primary btn-add"><i class="fas fa-plus"></i> Add New</button>
+                </header>
+                <form id="recipienttransaction-form" class="data-form card hidden">
+                    <h3><i class="fas fa-edit form-icon"></i> Add Recipient Transaction</h3><input type="hidden" class="edit-id">
+                    <div class="form-grid">
+                        <div class="form-group"><label for="recipient-trans-id">Transaction ID</label><input type="text" id="recipient-trans-id" name="Recipient_Trans_ID" placeholder="e.g., RT001" required></div>
+                        <div class="form-group"><label for="recipient-trans-recipient">Recipient</label><select id="recipient-trans-recipient" name="Recipient_ID" required><option value="">-- Select Recipient --</option></select></div>
+                        <div class="form-group"><label for="recipient-trans-hospital">Hospital</label><select id="recipient-trans-hospital" name="Hospital_ID" required><option value="">-- Select Hospital --</option></select></div>
+                        <div class="form-group"><label for="recipient-trans-blood-type">Blood Type Received</label><select id="recipient-trans-blood-type" name="Blood_Type_ID" required><option value="">-- Select Blood Type --</option></select></div>
+                        <div class="form-group"><label for="recipient-trans-date">Transaction Date</label><input type="date" id="recipient-trans-date" name="Date" required></div>
+                    </div>
+                    <div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save</button><button type="button" class="btn btn-secondary cancel-btn"><i class="fas fa-times"></i> Cancel</button></div>
+                </form>
+                <div class="table-container card"><table id="recipienttransaction-table" class="data-table"><thead><tr><th>Trans ID</th><th>Recipient</th><th>Hospital</th><th>Blood Type</th><th>Date</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+            </section>
+            
+            <div id="toast-container"></div>
+        </main>
+    </div>
+    <button id="theme-toggle" title="Toggle Theme"><span class="icon-light"><i class="fas fa-sun"></i></span><span class="icon-dark"><i class="fas fa-moon"></i></span></button>
+    <script src="script.js"></script>
+</body>
+</html>
